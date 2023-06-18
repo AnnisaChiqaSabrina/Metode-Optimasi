@@ -1,0 +1,32 @@
+'''Minimize F (λ) = −λ  cos (λ)  over the interval [0, π ] by means of the golden section method. the golden ratio is r=0.618 and f(0)=f( π /2)=0.'''
+
+#Golden Section Method
+import math 
+import numpy as np
+def gsm(a,b,tol):
+  r=0.618
+  lam1=a+(r**2)*(b-a)
+  lam2=a+r*(b-a)
+  i=0
+  L=b-a
+  while abs(L)>tol:
+    #masukkan fungsi objektif
+    f1=-(lam1)*math.cos(lam1) 
+    f2=-(lam2)*math.cos(lam2)
+    if f1>f2:
+      a=lam1
+      lam1=lam2
+      L=b-a
+      lam2=a+r*L
+    else:
+      b=lam2
+      lam2=lam1
+      L=b-a
+      lam1=a+(r**2)*L
+    i=1+1
+    hasil=(a+b)/2
+    fhasil=-(hasil)*math.cos(hasil)
+  return(hasil,fhasil)
+  
+
+  
