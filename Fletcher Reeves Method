@@ -1,0 +1,38 @@
+#Fletcher Reeves Method
+import numpy as np
+import pandas as pd
+from scipy.optimize import line_search
+
+def Fletcher_Reeves(f, grad, x0, max_iter):
+  x = x0
+  x1 = [x[0]]
+  x2 = [x[1]]
+  g =  grad_f(x)
+  u = -g
+  k = 0
+
+  while k < max_iter:
+    lam = line_search(f,grad_f, x,u)[0]
+    x = x + lam*u
+
+    g_new = grad_f(x)
+    beta = np.linalg.norm(g_new)**2 / np.linalg.norm(g)**2
+    u = -g_new + beta*u
+
+    x1 += [x[0],]
+    x2 += [x[1],]
+    k += 1
+  return (pd.DataFrame({'x1':x1, 'x2':x2}))
+  
+
+#Pemanggilan
+def f(x):
+    return (2*x[0]-x[1])**2+(x[1]+1)**2
+
+def grad_f(x):
+    dfdx1 = 4*(2*x[0]-x[1])
+    dfdx2 = 4*x[1]-4*x[0]+2
+    return np.array([dfdx1, dfdx2])
+
+x0 = [5/2,2]
+Fletcher_Reeves(f, grad_f, x0, max_iter=2)
